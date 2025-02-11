@@ -49,3 +49,7 @@ CSR with Plain React:
 4. **UI State Management:** Context API or Redux (We will use ContextAPI bez there is almost no UI State)
 5. **Form Management:** React Hook Form
 6. React Icons, React Hot Toast, ReCharts, Date-fns, Supabase
+
+### React Router
+
+Setup `npm install react-router-dom@latest`
