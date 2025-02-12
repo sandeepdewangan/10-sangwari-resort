@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { getCabins } from "../../services/apiCabins";
+import Cabin from "./Cabin";
 
 const CabinTable = () => {
   const {
@@ -46,38 +47,7 @@ const CabinTable = () => {
             </tr>
           </thead>
           {cabins.map((cabin) => (
-            <tbody key={cabin.id}>
-              <tr className="hover:bg-slate-50">
-                <td className="p-2">
-                  <p className="text-sm font-bold">{cabin.name}</p>
-                </td>
-                <td className="p-2">
-                  <p className="text-sm">{cabin.maxCapacity}</p>
-                </td>
-                <td className="p-2">
-                  <p className="text-sm">{cabin.regularPrice}</p>
-                </td>
-                <td className="p-2">
-                  <p className="text-sm">{cabin.discount}</p>
-                </td>
-                <td className="p-2">
-                  <p className="text-sm">{cabin.description}</p>
-                </td>
-                <td className="p-2">
-                  <p className="text-sm">
-                    <img src={cabin.image} width="100px" />
-                  </p>
-                </td>
-                <td className="p-2">
-                  <a href="#" className="text-sm font-semibold pr-2">
-                    Edit
-                  </a>
-                  <a href="#" className="text-sm font-semibold ">
-                    Delete
-                  </a>
-                </td>
-              </tr>
-            </tbody>
+            <Cabin key={cabin.id} cabin={cabin} />
           ))}
         </table>
       </div>
