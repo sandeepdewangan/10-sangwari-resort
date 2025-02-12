@@ -1,19 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { getCabins } from "../services/apiCabins";
+import CabinTable from "../features/cabins/CabinTable";
 
 const Cabins = () => {
-  const {
-    isLoading,
-    data: cabins,
-    error,
-  } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins,
-  });
-  console.log(isLoading, cabins, error);
-
-  return <div>Cabins</div>;
+  return (
+    <div className="mx-10">
+      <span className="text-2xl">Cabins</span>
+      <div className="pt-2">
+        <CabinTable />
+      </div>
+    </div>
+  );
 };
 
 export default Cabins;
