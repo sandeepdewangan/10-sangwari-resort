@@ -17,7 +17,7 @@ const AppLayout = () => {
       <div className="bg-green-50">
         {/* Logo */}
         <div className="pb-5">
-          <img src="/images/logo-transparent.png" />
+          <img src="/images/logo-transparent.png" width="200px" />
         </div>
         {/* Links */}
         <NavLink to="/" className={navLinkStyle}>

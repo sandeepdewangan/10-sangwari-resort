@@ -4,19 +4,32 @@ export async function getCabins() {
   let { data, error } = await supabase.from("cabins").select("*");
 
   if (error) {
-    console.log("Cabin cannot be loaded..." + error);
+    throw new Error(error.message);
   }
 
   return data;
 }
 
 export async function deleteCabin(id) {
-  console.log("----", id);
-
   const { data, error } = await supabase.from("cabins").delete().eq("id", id);
 
   if (error) {
-    console.log("Cabin cannot be deleted..." + error);
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+export async function insert(cabin) {
+  console.log(cabin);
+
+  const { data, error } = await supabase
+    .from("cabins")
+    .insert([cabin])
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
   }
 
   return data;
