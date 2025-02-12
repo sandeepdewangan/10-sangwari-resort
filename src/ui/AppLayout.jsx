@@ -12,9 +12,8 @@ const navLinkStyle =
 
 const AppLayout = () => {
   return (
-    <div className="grid grid-cols-[15%_85%] gap-2">
-      {/* Col-1*/}
-      <div className="bg-green-50">
+    <div className="flex flex-row gap-2">
+      <div className="bg-green-50 h-screen sticky top-0 basis-1/6">
         {/* Logo */}
         <div className="pb-5">
           <img src="/images/logo-transparent.png" width="200px" />
@@ -41,8 +40,7 @@ const AppLayout = () => {
           <span className="pl-2">Settings</span>
         </NavLink>
       </div>
-      {/* Col-2 */}
-      <div className="bg-blue-50">
+      <div className="bg-blue-50 basis-5/6">
         <div>
           <h1>Header</h1>
         </div>
