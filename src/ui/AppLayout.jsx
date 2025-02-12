@@ -12,12 +12,12 @@ const navLinkStyle =
 
 const AppLayout = () => {
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-[20%_80%]">
       {/* Col-1*/}
-      <div className="bg-green-50 w-[30%]">
+      <div className="bg-green-50">
         {/* Logo */}
         <div className="pb-5">
-          <img src="/public/images/logo-transparent.png" />
+          <img src="/images/logo-transparent.png" />
         </div>
         {/* Links */}
         <NavLink to="/" className={navLinkStyle}>
@@ -42,7 +42,7 @@ const AppLayout = () => {
         </NavLink>
       </div>
       {/* Col-2 */}
-      <div className="bg-blue-50 w-[70%]">
+      <div className="bg-blue-50">
         <div>
           <h1>Header</h1>
         </div>
