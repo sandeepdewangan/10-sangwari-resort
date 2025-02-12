@@ -103,3 +103,7 @@ const {
   queryFn: getCabins,
 });
 ```
+
+### Toast Message
+
+`npm i react-hot-toast`
