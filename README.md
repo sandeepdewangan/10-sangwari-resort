@@ -53,3 +53,53 @@ CSR with Plain React:
 ### React Router
 
 Setup `npm install react-router-dom@latest`
+
+### React Query
+
+- For remote data fetching.
+- Data is stored in cache.
+- Automatic refetching to keep state synched.
+- Pre-fetching.
+- Offline support.
+
+**STEP 01:** Install Package
+`npm i @tanstack/react-query`
+`npm i @tanstack/react-query-devtools`
+
+**STEP 02:** Setup
+
+```js
+const queryClient = new QueryClient({
+  defaultOptions: {
+    staleTime: 60 * 1000,
+  },
+});
+```
+
+**STEP 03:** Provider
+
+```js
+function App() {
+  ...
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      ...
+      ...
+    </QueryClientProvider>
+  );
+}
+```
+
+**STEP 04:** Fetching Data
+
+```js
+const {
+  isLoading,
+  data: cabins,
+  error,
+} = useQuery({
+  queryKey: ["cabins"],
+  queryFn: getCabins,
+});
+```
