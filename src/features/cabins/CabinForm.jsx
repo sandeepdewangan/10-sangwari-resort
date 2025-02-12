@@ -10,7 +10,8 @@ const labelStyle = "block mb-2 text-sm font-medium text-gray-900";
 
 const CabinForm = () => {
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, getValues, formState } = useForm();
+  const { errors } = formState;
   const { isLoading, mutate } = useMutation({
     mutationFn: insert,
     onSuccess: () => {
@@ -27,41 +28,87 @@ const CabinForm = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
+      {/* Name */}
       <div className="mb-6">
         <label className={labelStyle}>Name</label>
-        <input type="text" className={inputStyle} {...register("name")} />
+        <input
+          type="text"
+          className={inputStyle}
+          {...register("name", { required: "This field is required" })}
+        />
+        <label className="text-red-500">
+          {errors?.name?.message && <p>{errors?.name?.message}</p>}
+        </label>
       </div>
+      {/* Max Capacity */}
       <div className="mb-6">
         <label className={labelStyle}>Max Capacity</label>
         <input
           type="number"
           className={inputStyle}
-          {...register("maxCapacity")}
+          {...register("maxCapacity", {
+            required: "This field is required",
+            min: { value: 1, message: "Capacity should be at least 1" },
+          })}
         />
+        <label className="text-red-500">
+          {errors?.maxCapacity?.message && (
+            <p>{errors?.maxCapacity?.message}</p>
+          )}
+        </label>
       </div>
+      {/* Regular Price */}
       <div className="mb-6">
         <label className={labelStyle}>Regular Price</label>
         <input
           type="number"
           className={inputStyle}
-          {...register("regularPrice")}
+          {...register("regularPrice", { required: "This field is required" })}
         />
+        <label className="text-red-500">
+          {errors?.regularPrice?.message && (
+            <p>{errors?.regularPrice?.message}</p>
+          )}
+        </label>
       </div>
+      {/* Discount */}
       <div className="mb-6">
         <label className={labelStyle}>Discount</label>
-        <input type="number" className={inputStyle} {...register("discount")} />
+        <input
+          type="number"
+          className={inputStyle}
+          {...register("discount", {
+            required: "This field is required",
+            validate: (value) =>
+              value <= getValues().regularPrice ||
+              "Discount should be less than regular price.",
+          })}
+        />
+        <label className="text-red-500">
+          {errors?.discount?.message && <p>{errors?.discount?.message}</p>}
+        </label>
       </div>
+      {/* Description */}
       <div className="mb-6">
         <label className={labelStyle}>Description</label>
         <input
           type="text"
           className={inputStyle}
-          {...register("description")}
+          {...register("description", { required: "This field is required" })}
         />
+        <label className="text-red-500">
+          {errors?.description?.message && (
+            <p>{errors?.description?.message}</p>
+          )}
+        </label>
       </div>
+      {/* Image */}
       <div className="mb-6">
         <label className={labelStyle}>Image</label>
         <input type="text" className={inputStyle} {...register("image")} />
+        <label className="text-red-500">
+          {errors?.image?.message && <p>{errors?.image?.message}</p>}
+        </label>
       </div>
 
       <button
