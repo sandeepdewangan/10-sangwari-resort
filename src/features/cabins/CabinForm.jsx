@@ -10,11 +10,16 @@ const inputStyle =
   "block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white text-base focus:ring-blue-500 focus:border-blue-500";
 const labelStyle = "block mb-2 text-sm font-medium text-gray-900";
 
-const CabinForm = () => {
+const CabinForm = ({ cabinToEdit = {} }) => {
+  const { id: editId, ...editValues } = cabinToEdit;
+  const isEdit = Boolean(editId);
+  const { register, handleSubmit, reset, getValues, formState } = useForm({
+    defaultValues: isEdit ? editValues : {},
+  });
+
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
-  const { isPending, mutate } = useMutation({
+  const { isPending, mutate: createCabin } = useMutation({
     mutationFn: insert,
     onSuccess: () => {
       toast.success("Cabin inserted successfully");
@@ -24,10 +29,24 @@ const CabinForm = () => {
     onError: (err) => toast.error(err.message),
   });
 
+  const { isPending: isCreating, mutate: editCabin } = useMutation({
+    mutationFn: ({ newCabinData, id }) => insert(newCabinData, id),
+    onSuccess: () => {
+      toast.success("Cabin inserted successfully");
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      reset(); // resets the form
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   function onSubmit(data) {
-    mutate({ ...data, image: data.image[0] });
+    const image = typeof data.image === "string" ? data.image : data.image[0];
+
+    if (isEdit) editCabin({ newCabinData: { ...data, image }, id: editId });
+    else createCabin({ ...data, image: image });
   }
-  if (isPending) return <Loading />;
+
+  if (isPending || isCreating) return <Loading />;
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       {/* Name */}
@@ -110,7 +129,9 @@ const CabinForm = () => {
         <input
           type="file"
           className={inputStyle}
-          {...register("image", { required: "This field is required" })}
+          {...register("image", {
+            required: isEdit ? false : "This field is required",
+          })}
         />
         <label className="text-red-500">
           {errors?.image?.message && <p>{errors?.image?.message}</p>}
@@ -122,7 +143,7 @@ const CabinForm = () => {
         className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
         disabled={isPending}
       >
-        Submit
+        {isEdit ? "Update Cabin" : "Create New Cabin"}
       </button>
     </Form>
   );
