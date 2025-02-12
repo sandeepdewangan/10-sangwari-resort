@@ -107,3 +107,7 @@ const {
 ### Toast Message
 
 `npm i react-hot-toast`
+
+### React Forms
+
+`npm i react-hook-form`
