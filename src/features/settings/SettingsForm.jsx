@@ -1,38 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Form } from "react-router-dom";
 
-import { getSettings, save } from "../../services/apiSettings";
-import toast from "react-hot-toast";
+import { useSettings } from "../../hooks/useSettings";
+import { useUpdateSettings } from "../../hooks/useUpdateSettings";
 
 const inputStyle =
   "block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-white text-base focus:ring-blue-500 focus:border-blue-500";
 const labelStyle = "block mb-2 text-sm font-medium text-gray-900";
 
 const SettingsForm = () => {
-  const queryClient = useQueryClient();
   // use query
-  const {
-    isLoading: isQueryPending,
-    data: settings,
-    error: queryError,
-  } = useQuery({
-    queryKey: ["settings"],
-    queryFn: getSettings,
-  });
-
+  const { isQueryPending, settings } = useSettings();
+  // for forms
   const { register, handleSubmit, formState } = useForm();
-
   // click event
-  const { isPending: isFormSavingPending, mutate: saveSettings } = useMutation({
-    mutationFn: save,
-    onSuccess: () => {
-      toast.success("Save changes successfully made to database.");
-      queryClient.invalidateQueries({ queryKey: ["settings"] });
-    },
-    onError: (error) => toast(error.message),
-  });
-
+  const { isFormSavingPending, saveSettings } = useUpdateSettings();
+  // for form errors
   const { errors } = formState;
 
   function onSubmit(data) {
