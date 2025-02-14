@@ -16,7 +16,8 @@ import { Toaster } from "react-hot-toast";
 // Setup React Router
 const queryClient = new QueryClient({
   defaultOptions: {
-    staleTime: 60 * 1000,
+    // staleTime: 60 * 1000,
+    staleTime: 0,
   },
 });
 
