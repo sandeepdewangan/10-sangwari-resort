@@ -4,6 +4,7 @@ import { getCabins } from "../../services/apiCabins";
 import Cabin from "./Cabin";
 import CabinForm from "./CabinForm";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const CabinTable = () => {
   const [showForm, setShowForm] = useState(false);
@@ -15,6 +16,21 @@ const CabinTable = () => {
     queryKey: ["cabins"],
     queryFn: getCabins,
   });
+
+  const [searchParam] = useSearchParams();
+  const filterCondition = searchParam.get("discount") || "all";
+  let filteredCabins;
+
+  switch (filterCondition) {
+    case "with-discounts":
+      filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
+      break;
+    case "no-discounts":
+      filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+      break;
+    default:
+      filteredCabins = cabins;
+  }
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -49,7 +65,7 @@ const CabinTable = () => {
               </th>
             </tr>
           </thead>
-          {cabins.map((cabin) => (
+          {filteredCabins.map((cabin) => (
             <Cabin key={cabin.id} cabin={cabin} />
           ))}
         </table>
