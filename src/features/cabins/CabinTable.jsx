@@ -1,6 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { getCabins } from "../../services/apiCabins";
 import Cabin from "./Cabin";
 import CabinForm from "./CabinForm";
 import { useState } from "react";
