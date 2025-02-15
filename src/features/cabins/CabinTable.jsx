@@ -16,7 +16,7 @@ const CabinTable = () => {
     queryKey: ["cabins"],
     queryFn: getCabins,
   });
-
+  // Filter
   const [searchParam] = useSearchParams();
   const filterCondition = searchParam.get("discount") || "all";
   let filteredCabins;
@@ -31,6 +31,15 @@ const CabinTable = () => {
     default:
       filteredCabins = cabins;
   }
+
+  // Sorting
+  const sortCondition = searchParam.get("sortBy") || "name-az";
+  const [field, order] = sortCondition.split("-");
+  const modifier = order == "az" ? 1 : -1;
+
+  const sortedCabins = filteredCabins?.sort(
+    (a, b) => (a[field] - b[field]) * modifier
+  );
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -65,7 +74,7 @@ const CabinTable = () => {
               </th>
             </tr>
           </thead>
-          {filteredCabins.map((cabin) => (
+          {sortedCabins.map((cabin) => (
             <Cabin key={cabin.id} cabin={cabin} />
           ))}
         </table>
