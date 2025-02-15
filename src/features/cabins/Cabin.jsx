@@ -3,18 +3,12 @@ import { deleteCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import CabinForm from "./CabinForm";
+import { useDeleteCabin } from "../../hooks/useDeleteCabin";
 
 const Cabin = ({ cabin }) => {
   const queryClient = useQueryClient();
   const [editForm, setEditForm] = useState(false);
-  const { isLoading, mutate } = useMutation({
-    mutationFn: deleteCabin,
-    onSuccess: () => {
-      toast.success("Cabin deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const { isLoading, mutate } = useDeleteCabin();
 
   return (
     <>

@@ -5,17 +5,11 @@ import Cabin from "./Cabin";
 import CabinForm from "./CabinForm";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useCabins } from "../../hooks/useCabins";
 
 const CabinTable = () => {
   const [showForm, setShowForm] = useState(false);
-  const {
-    isLoading,
-    data: cabins,
-    error,
-  } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins,
-  });
+  const { isLoading, cabins, error } = useCabins();
   // Filter
   const [searchParam] = useSearchParams();
   const filterCondition = searchParam.get("discount") || "all";

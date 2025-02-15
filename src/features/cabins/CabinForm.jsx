@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Form } from "react-router-dom";
-import { insert } from "../../services/apiCabins";
-import toast from "react-hot-toast";
+
+import { useInsertCabin } from "../../hooks/useInsertCabin.js";
+import { useUpdateCabin } from "../../hooks/useUpdateCabin.js";
 
 import Loading from "../../ui/Loading";
 
@@ -17,27 +17,9 @@ const CabinForm = ({ cabinToEdit = {} }) => {
     defaultValues: isEdit ? editValues : {},
   });
 
-  const queryClient = useQueryClient();
   const { errors } = formState;
-  const { isPending, mutate: createCabin } = useMutation({
-    mutationFn: insert,
-    onSuccess: () => {
-      toast.success("Cabin inserted successfully");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset(); // resets the form
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
-  const { isPending: isCreating, mutate: editCabin } = useMutation({
-    mutationFn: ({ newCabinData, id }) => insert(newCabinData, id),
-    onSuccess: () => {
-      toast.success("Cabin inserted successfully");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset(); // resets the form
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const { isPending, mutate: createCabin } = useInsertCabin(reset);
+  const { isPending: isCreating, mutate: editCabin } = useUpdateCabin(reset);
 
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
