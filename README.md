@@ -111,3 +111,21 @@ const {
 ### React Forms
 
 `npm i react-hook-form`
+
+### Pagination
+
+### Prefetching
+
+We fetch those data, which we might need in future.
+
+```js
+const queryClient = useQueryClient();
+queryClient.prefetchQuery({
+  queryKey: ["key"],
+  queryFn: funCallToExecute,
+});
+```
+
+### Infinite Scrolling
+
+Check Docs.
